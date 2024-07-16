@@ -23,14 +23,19 @@ public class Categoria {
     @Column(name = "categoria_id")
     private UUID id;
 
-    @Column(name = "nome_categoria", nullable = false)
+    @Column(name = "nome", nullable = false)
     private String nome;
 
-    @Column(name = "descricao_categoria", length = 500)
+    @Column(name = "descricao", length = 500)
     private String descricao;
 
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
     private List<Produto> produtos;
 
+
+    public Categoria(CategoriaRequestPayload data){
+        this.nome = data.nome();
+        this.descricao = data.descricao();
+    }
 
 }
