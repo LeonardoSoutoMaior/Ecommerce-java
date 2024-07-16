@@ -53,4 +53,16 @@ public class CategoriaController {
 
         return ResponseEntity.notFound().build();
     }
+
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity<String> deletaCategoria(@PathVariable UUID id){
+        Optional<Categoria> categoria = this.repository.findById(id);
+
+        if (categoria.isPresent()){
+            repository.deleteById(id);
+            return ResponseEntity.ok("Categoria deletada com sucesso");
+        }
+
+        return  ResponseEntity.notFound().build();
+    }
 }
