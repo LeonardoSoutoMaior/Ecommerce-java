@@ -8,10 +8,9 @@ import com.example.ecommerce.repositories.CategoriaRepository;
 import com.example.ecommerce.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/categoria")
@@ -29,5 +28,12 @@ public class CategoriaController {
         categoriaService.criarCategoria(categoria);
         return ResponseEntity.ok(new CategoriaCreateResponse(categoria.getId()));
 
+    }
+
+
+    @GetMapping("/todasCategorias")
+    public ResponseEntity<List<Categoria>> retornaTodasCategorias(){
+        List<Categoria> categorias = repository.findAll();
+        return ResponseEntity.ok(categorias);
     }
 }
