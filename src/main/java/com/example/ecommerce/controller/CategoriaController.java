@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/categoria")
@@ -30,10 +32,25 @@ public class CategoriaController {
 
     }
 
-
     @GetMapping("/todasCategorias")
     public ResponseEntity<List<Categoria>> retornaTodasCategorias(){
         List<Categoria> categorias = repository.findAll();
         return ResponseEntity.ok(categorias);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Categoria> atualizaCategoria(@PathVariable UUID id, @RequestBody CategoriaRequestPayload payload){
+        Optional<Categoria> categoria = this.repository.findById(id);
+
+        if (categoria.isPresent()){
+            Categoria novaCategoria = categoria.get();
+            novaCategoria.setNome(payload.nome());
+            novaCategoria.setDescricao(payload.descricao());
+
+            this.repository.save(novaCategoria);
+            return ResponseEntity.ok(novaCategoria);
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }
