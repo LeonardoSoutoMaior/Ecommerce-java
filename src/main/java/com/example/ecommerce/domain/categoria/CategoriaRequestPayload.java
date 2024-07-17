@@ -1,4 +1,6 @@
 package com.example.ecommerce.domain.categoria;
 
-public record CategoriaRequestPayload(String nome, String descricao) {
+import java.util.UUID;
+
+public record CategoriaRequestPayload(UUID id, String nome, String descricao) {
 }
