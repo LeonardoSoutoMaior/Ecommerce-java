@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/produto")
@@ -32,5 +34,23 @@ public class ProdutoController {
     public ResponseEntity<List<Produto>> retornaTodosProdutos(){
         List<Produto> produtos = repository.findAll();
         return  ResponseEntity.ok(produtos);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Produto> atualizaProduto(@PathVariable UUID id, @RequestBody ProdutoRequestPayload payload){
+        Optional<Produto> produto = repository.findById(id);
+
+        if (produto.isPresent()){
+            Produto novoProduto = produto.get();
+            novoProduto.setNome(payload.nome());
+            novoProduto.setDescricao(payload.descricao());
+            novoProduto.setPreco(payload.preco());
+            novoProduto.setImagemUrl(payload.imagemUrl());
+            novoProduto.setEstoque(payload.estoque());
+
+            this.repository.save(novoProduto);
+            return ResponseEntity.ok(novoProduto);
+        }
+        return  ResponseEntity.notFound().build();
     }
 }
