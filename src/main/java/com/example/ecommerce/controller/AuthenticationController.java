@@ -1,8 +1,10 @@
 package com.example.ecommerce.controller;
 
 import com.example.ecommerce.domain.usuarios.AutenticacaoDTO;
+import com.example.ecommerce.domain.usuarios.LoginResponseDTO;
 import com.example.ecommerce.domain.usuarios.RegistroDTO;
 import com.example.ecommerce.domain.usuarios.Usuario;
+import com.example.ecommerce.infra.security.TokenService;
 import com.example.ecommerce.repositories.UsuarioRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
 
     @Autowired
+    private  TokenService tokenService;
+
+    @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
@@ -30,7 +35,9 @@ public class AuthenticationController {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.senha());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
-        return ResponseEntity.ok().build();
+        var token = tokenService.generateToken((Usuario) auth.getPrincipal());
+
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
     @PostMapping("/registrar")
