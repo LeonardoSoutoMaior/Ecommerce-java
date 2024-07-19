@@ -22,9 +22,13 @@ public class SecurityConfigurations {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.POST, "/autenticar/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/autenticar/registrar").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/produto").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/categoria").hasRole("ADMIN")
                         .anyRequest().authenticated())
+                .headers(headers -> headers.disable())
                 .build();
     }
 

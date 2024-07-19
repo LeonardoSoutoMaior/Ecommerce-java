@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Table(name = "usuario")
 @Entity(name = "usuario")
@@ -20,17 +21,31 @@ public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    @Column(name = "usuario_id")
+    private UUID id;
 
+    @Column
     private String nome;
 
+    @Column
     private String sobrenome;
 
+    @Column
     private String email;
 
+    @Column
     private String senha;
 
+    @Column
     private UsuarioRole role;
+
+    public Usuario(String nome, String sobrenome, String email, String senha, UsuarioRole role){
+        this.nome = nome;
+        this.sobrenome = sobrenome;
+        this.email = email;
+        this.senha = senha;
+        this.role = role;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -40,7 +55,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public String getPassword() {
-        return "";
+        return senha;
     }
 
     @Override
