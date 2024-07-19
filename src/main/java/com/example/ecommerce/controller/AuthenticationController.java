@@ -1,10 +1,12 @@
 package com.example.ecommerce.controller;
 
+import com.example.ecommerce.domain.carrinho.Carrinho;
 import com.example.ecommerce.domain.usuarios.AutenticacaoDTO;
 import com.example.ecommerce.domain.usuarios.LoginResponseDTO;
 import com.example.ecommerce.domain.usuarios.RegistroDTO;
 import com.example.ecommerce.domain.usuarios.Usuario;
 import com.example.ecommerce.infra.security.TokenService;
+import com.example.ecommerce.repositories.CarrinhoRepository;
 import com.example.ecommerce.repositories.UsuarioRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class AuthenticationController {
     @Autowired
     private UsuarioRepository repository;
 
+    @Autowired
+    private CarrinhoRepository carrinhoRepository;
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AutenticacaoDTO data){
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.senha());
@@ -47,7 +52,11 @@ public class AuthenticationController {
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.senha());
         Usuario novoUsuario = new Usuario(data.nome(), data.sobrenome(), data.email(), encryptedPassword, data.role());
 
-        this.repository.save(novoUsuario);
+        Usuario usuarioSalvo = this.repository.save(novoUsuario);
+
+        Carrinho novoCarrinho = new Carrinho();
+        novoCarrinho.setUsuario(usuarioSalvo);
+        this.carrinhoRepository.save(novoCarrinho);
 
         return ResponseEntity.ok().build();
     }
