@@ -11,7 +11,7 @@ import lombok.Setter;
 import java.util.UUID;
 
 @Entity
-@Table
+@Table(name = "itens_carrinho")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,6 +20,7 @@ public class ItemCarrinho {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "item_carrinho_id")
     private UUID id;
 
     private int quantidade;
