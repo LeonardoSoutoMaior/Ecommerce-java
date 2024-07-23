@@ -43,6 +43,15 @@ public class CarrinhoController {
         return ResponseEntity.ok("Produto adicionado ao carrinho com sucesso.");
     }
 
+    @PostMapping("/{carrinhoId}/remover-produto")
+    public ResponseEntity<String> removerProdutoDoCarrinho(
+            @PathVariable UUID carrinhoId,
+            @RequestParam UUID produtoId,
+            @RequestParam int quantidade){
+
+        itemCarrinhoService.removerProdutoDoCarrinho(carrinhoId, produtoId, quantidade);
+        return ResponseEntity.ok("Produto removido do carrinho com sucesso");
+    }
 
     @GetMapping("/{carrinhoId}/total")
     public ResponseEntity<BigDecimal> obterTotalCarrinho(@PathVariable UUID carrinhoId) {

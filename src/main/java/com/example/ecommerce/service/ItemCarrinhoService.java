@@ -54,6 +54,31 @@ public class ItemCarrinhoService {
         }
     }
 
+
+    public void removerProdutoDoCarrinho(UUID carrinhoId, UUID produtoId, int quantidade){
+        Optional<Carrinho> carrinhoOpt = carrinhoRepository.findById(carrinhoId);
+        Optional<Produto> produtoOpt = produtoRepository.findById(produtoId);
+
+        if (carrinhoOpt.isPresent() && produtoOpt.isPresent()){
+            ItemCarrinho itemCarrinhoExistente = itemCarrinhoRepository.findByCarrinhoIdAndProdutoId(carrinhoId, produtoId);
+
+            if (itemCarrinhoExistente != null){
+                int novaQuantidade = itemCarrinhoExistente.getQuantidade() - quantidade;
+                if (novaQuantidade > 0){
+                    itemCarrinhoExistente.setQuantidade(novaQuantidade);
+                    itemCarrinhoRepository.save(itemCarrinhoExistente);
+                } else {
+                    itemCarrinhoRepository.delete(itemCarrinhoExistente);
+                }
+            } else {
+                throw new RuntimeException("Item não encontrado no carrinho");
+            }
+        } else {
+            throw new RuntimeException("Carrinho ou produto não encontrado");
+        }
+    }
+
+
     public BigDecimal calcularTotalCarrinho(UUID carrinhoId){
         List<ItemCarrinho> itens = itemCarrinhoRepository.findByCarrinhoId(carrinhoId);
         return itens.stream()
