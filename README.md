@@ -46,3 +46,9 @@ A aplicação foi desenvolvida utilizando Spring Boot e H2 Database e está prot
 - **JPA (Java Persistence API)**: Para gerenciar a persistência de dados.
 - **H2 Database**: Para o banco de dados em memória usado para desenvolvimento e testes.
 
+## Modelagem de Dados
+
+Aqui está a modelagem de dados do projeto:
+
+![ecommerce_modelagem](https://github.com/user-attachments/assets/d3f5c69d-d7a1-48a7-b521-58e5d75c4155)
+
