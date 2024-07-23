@@ -8,4 +8,6 @@ import java.util.UUID;
 
 public interface ItemCarrinhoRepository extends JpaRepository<ItemCarrinho, UUID> {
     List<ItemCarrinho> findByCarrinhoId(UUID carrinhoId);
+    ItemCarrinho findByCarrinhoIdAndProdutoId(UUID carrinhoId, UUID produtoId);
+
 }

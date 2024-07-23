@@ -2,6 +2,7 @@ package com.example.ecommerce.domain.carrinho;
 
 import com.example.ecommerce.domain.itemCarrinho.ItemCarrinho;
 import com.example.ecommerce.domain.usuarios.Usuario;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +30,7 @@ public class Carrinho {
     private Usuario usuario;
 
     @OneToMany(mappedBy = "carrinho", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<ItemCarrinho> itens;
 
     public Carrinho(Usuario usuario){
